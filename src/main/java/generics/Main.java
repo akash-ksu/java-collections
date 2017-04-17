@@ -2,6 +2,7 @@ package generics;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -10,9 +11,10 @@ public class Main {
         Person megha = new Person("megha", 22);
         Person ramanth = new Person("ramnath", 56);
         Person ranjana = new Person("ranjana", 52);
+        Person baby = new Person("some", 12);
 
         List<Person> family = new ArrayList<>();
-        Collections.addAll(family,akash, megha, ramanth, ranjana);
+        Collections.addAll(family, akash, megha, ramanth, ranjana, baby);
 
         System.out.println(family);
 
@@ -40,5 +42,28 @@ public class Main {
         System.out.println(pair2.getLeft());
         System.out.println(pair2.getRight());
 
+        System.out.println("------------------------------------------");
+
+        Person youngestPerson = min(family, Comparator.comparing(Person::getAge));
+
+        System.out.println("Youngest person is : " + youngestPerson);
+
+    }
+
+    private static <T> T min(List<T> family, Comparator<T> ageComparator) {
+        if (family.isEmpty()) {
+            throw new IllegalArgumentException("there has to be atleast one member in the family");
+        }
+
+        T smallest = family.get(0);
+
+        for (int i = 1; i < family.size(); i++) {
+            T current = family.get(i);
+            if (ageComparator.compare(current, smallest) < 0) {
+                smallest = current;
+            }
+        }
+
+        return smallest;
     }
 }
